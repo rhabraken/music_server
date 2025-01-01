@@ -25,7 +25,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: music_server/api/Dockerfile
+      dockerfile: ./api/Dockerfile
     # Shares the wireguard network namespace
     container_name: music_server_api
     network_mode: "service:wireguard"
@@ -58,7 +58,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: music_server/web/Dockerfile
+      dockerfile: ./web/Dockerfile
     container_name: music_server_web
     ports:
       - "8501:8501"
