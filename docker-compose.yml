@@ -1,0 +1,72 @@
+services:
+
+  ### MUSIC SERVER
+  wireguard:
+    image: linuxserver/wireguard
+    container_name: music_server_wireguard
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - SERVERURL=your-wireguard-endpoint
+      - SERVERPORT=51820
+      - PEERS=1
+      - PEERDNS=1
+    volumes:
+      - ${WIREGUARD_CONFIG_PATH}:/config
+      - /lib/modules:/lib/modules:ro
+    ports:
+      - "51820:51820/udp"
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: music_server/api/Dockerfile
+    # Shares the wireguard network namespace
+    container_name: music_server_api
+    network_mode: "service:wireguard"
+    restart: unless-stopped
+    env_file:
+      - stack.env
+    depends_on:
+      - wireguard
+    volumes:
+      - "${STREAMRIP_DATA_PATH}:/root/.config/streamrip/"
+      - "${MUSIC_PATH}:/root/Music/"
+    # The API is now only accessible via the WireGuard tunnel or through the 'wireguard' service name on the shared network.
+
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: music_server_navidrome
+    env_file:
+      - stack.env
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - "${NAVI_DATA_PATH}:/data"
+      - "${MUSIC_PATH}:/music:ro"
+    ports:
+      - "4533:4533"
+    restart: unless-stopped
+    # Accessible at http://localhost:4533
+
+  web:
+    build:
+      context: .
+      dockerfile: music_server/web/Dockerfile
+    container_name: music_server_web
+    ports:
+      - "8501:8501"
+    restart: unless-stopped
+    env_file:
+      - stack.env
+    depends_on:
+      - api
+    # From 'web', access 'api' at http://wireguard:5000
+
+

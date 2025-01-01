@@ -1,0 +1,7 @@
+/downloads
+/music
+/navi_data
+/streamrip_data
+.env
+/plugin/config.json
+.DS_Store

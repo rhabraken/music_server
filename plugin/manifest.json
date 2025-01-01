@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Qobuz Album Downloader",
+  "version": "1.1",
+  "description": "Send Qobuz album URLs to your API.",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": ["https://www.qobuz.com/*"],
+  "action": {
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "128": "icons/icon-128.png"
+    },
+    "default_title": "Qobuz Downloader",
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "128": "icons/icon-128.png"
+  }
+}
