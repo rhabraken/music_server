@@ -36,7 +36,6 @@ services:
       - wireguard
     volumes:
       - "${STREAMRIP_DATA_PATH}:/root/.config/streamrip/"
-      - "./streamrip/config.toml:/root/.config/streamrip/config.toml"
       - "${MUSIC_PATH}:/root/Music/"
     # The API is now only accessible via the WireGuard tunnel or through the 'wireguard' service name on the shared network.
 
@@ -55,6 +54,7 @@ services:
       - "4533:4533"
     restart: unless-stopped
     # Accessible at http://localhost:4533
+
 
   web:
     build:

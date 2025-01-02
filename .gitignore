@@ -2,6 +2,6 @@
 /music
 /navi_data
 /streamrip_data
-.env
+*.env
 /plugin/config.json
 .DS_Store
